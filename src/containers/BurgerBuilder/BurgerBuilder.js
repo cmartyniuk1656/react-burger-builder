@@ -49,15 +49,53 @@ class BurgerBuilder extends Component {
     }
 
     removeIngredientHandler = (type) => {
+
+        //Get count of the ingredient using passed type arg
+        const oldCount = this.state.ingredients[type];
+
+        //Do nothing if count is already at 0
+        if (oldCount <= 0) {
+            return;
+        }
+
+        const updatedCount = oldCount - 1;
+
+        //Create new array with ES6 spread function to immuteably update state object
+        const updatedIngredients = {
+            ...this.state.ingredients
+        }
+
+        //Update temporaray ingredient array with new count
+        updatedIngredients[type] = updatedCount;
+
+        //Get the cost of the ingredient that should be subtracted from the total price
+        const priceDeduction = INGREDIENT_PRICES[type];
+
+        const oldPrice = this.state.totalPrice;
+        const newPrice = oldPrice - priceDeduction;
+
+
+        //Update the state object with new ingredients count and total price
+        this.setState({totalPrice: newPrice, ingredients: updatedIngredients})
         
     }
 
     render() {
+
+        const disabledInfo = {
+            ...this.state.ingredients
+        };
+        for (let key in disabledInfo) {
+            disabledInfo[key] = disabledInfo[key] <= 0
+        }
+
         return(
             <Auxiliary>
                 <Burger ingredients={this.state.ingredients}/>
                 <BuildControls
-                    ingredientAdded={this.addIngredientHandler} />
+                    ingredientAdded={this.addIngredientHandler}
+                    ingredientRemoved={this.removeIngredientHandler}
+                    disabled={disabledInfo}/>
             </Auxiliary>
         );
     }
