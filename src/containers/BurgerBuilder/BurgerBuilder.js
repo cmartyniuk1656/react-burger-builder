@@ -4,6 +4,13 @@ import Auxiliary from '../../hoc/Auxiliary';
 import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 
+const INGREDIENT_PRICES = {
+    salad: 0.5,
+    cheese: 0.4,
+    meat: 1.3,
+    bacon: 0.7
+}
+
 class BurgerBuilder extends Component {
 
     state = {
@@ -12,14 +19,45 @@ class BurgerBuilder extends Component {
             bacon: 0,
             cheese: 0,
             meat: 0
+        },
+        totalPrice: 4
+    }
+
+    addIngredientHandler = (type) => {
+
+        //Get count of the ingredient using passed type arg
+        const oldCount = this.state.ingredients[type];
+        const updatedCount = oldCount + 1;
+
+        //Create new array with ES6 spread function to immuteably update state object
+        const updatedIngredients = {
+            ...this.state.ingredients
         }
+
+        //Update temporaray ingredient array with new count
+        updatedIngredients[type] = updatedCount;
+
+        //Get the cost of the ingredient that should be added to the total price
+        const priceAddition = INGREDIENT_PRICES[type];
+
+        const oldPrice = this.state.totalPrice;
+        const newPrice = oldPrice + priceAddition;
+
+
+        //Update the state object with new ingredients count and total price
+        this.setState({totalPrice: newPrice, ingredients: updatedIngredients})
+    }
+
+    removeIngredientHandler = (type) => {
+        
     }
 
     render() {
         return(
             <Auxiliary>
                 <Burger ingredients={this.state.ingredients}/>
-                <BuildControls />
+                <BuildControls
+                    ingredientAdded={this.addIngredientHandler} />
             </Auxiliary>
         );
     }
