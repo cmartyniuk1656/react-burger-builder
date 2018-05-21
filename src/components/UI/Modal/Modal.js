@@ -9,7 +9,7 @@ class Modal extends Component {
 
     //Only re-render when modal is shown
     shouldComponentUpdate(nextProps, nextState) {
-        return nextProps.show !== this.props.show;
+        return nextProps.show !== this.props.show || nextProps.children !== this.props.children;
     }
 
     render() {
