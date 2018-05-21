@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
 
-import Auxiliary from '../../../hoc/Auxiliary';
+import Auxiliary from '../../../hoc/Auxiliary/Auxiliary';
 import Backdrop from '../../UI/Backdrop/Backdrop';
 import classes from './Modal.css';
 
 
 class Modal extends Component {
 
+    //Only re-render when modal is shown
     shouldComponentUpdate(nextProps, nextState) {
         return nextProps.show !== this.props.show;
     }
