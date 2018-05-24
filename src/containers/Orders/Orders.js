@@ -13,7 +13,7 @@ class Orders extends Component {
 
     componentDidMount() {
 
-        axios.get('/order.json')
+        axios.get('/orders.json')
             .then(res => {
                 const fetchedOrders = [];
                 for(let key in res.data) {
@@ -23,6 +23,7 @@ class Orders extends Component {
                     });
                 }
                 this.setState({loading: false, orders: fetchedOrders});
+                console.info(this.state.orders);
             })
             .catch(err => {
                 this.setState({loading: false});
@@ -34,8 +35,12 @@ class Orders extends Component {
         
         return(
             <div>
-                <Order />
-                <Order />
+                {this.state.orders.map(order => (
+                    <Order 
+                    ingredients={order.ingredients}
+                    price={order.price}
+                    key={order.id}/>
+                ))}
             </div>
         );
 
