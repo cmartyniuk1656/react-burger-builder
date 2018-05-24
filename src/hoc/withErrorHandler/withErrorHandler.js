@@ -29,6 +29,7 @@ const withErrorHandler = (WrappedComponent, axios ) => {
             axios.interceptors.response.eject(this.resInterceptor);
         }
 
+        //Reset the error state after an error has been confirmed
         errorConfirmedHandler = () => {
             this.setState({error: null});
         }
